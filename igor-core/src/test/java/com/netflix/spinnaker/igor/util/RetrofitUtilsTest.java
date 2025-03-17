@@ -36,18 +36,19 @@ import retrofit2.http.GET;
 public class RetrofitUtilsTest {
   MockWebServer server;
   RetrofitService service;
-  String baseUrl = "http://localhost/v1";
+  String baseUrl;
 
   @BeforeEach
   void setup() throws IOException {
+    server = new MockWebServer();
+    server.start();
+    baseUrl = server.url("/v1").toString();
     service =
         new Retrofit.Builder()
             .baseUrl(RetrofitUtils.getBaseUrl(baseUrl))
             .client(new OkHttpClient())
             .build()
             .create(RetrofitService.class);
-    server = new MockWebServer();
-    server.start();
   }
 
   @AfterEach

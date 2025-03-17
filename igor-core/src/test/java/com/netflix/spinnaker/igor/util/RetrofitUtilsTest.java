@@ -25,6 +25,7 @@ import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrofit2.Call;
@@ -47,6 +48,11 @@ public class RetrofitUtilsTest {
             .create(RetrofitService.class);
     server = new MockWebServer();
     server.start();
+  }
+
+  @AfterEach
+  void teardown() throws IOException {
+    server.shutdown();
   }
 
   @Test

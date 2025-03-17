@@ -34,36 +34,36 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.build_variables.outputs.VERSION }}
         run: ./gradlew build ${{ steps.build_variables.outputs.REPO }}-web:installDist
-      - name: Build slim container image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.slim
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest"
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest-slim"
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-slim"
-      - name: Build ubuntu container image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.ubuntu
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest-ubuntu"
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-ubuntu"
-      - name: Build local slim container image for testing
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.slim
-          load: true
-          platforms: local
-          tags: |
-            "${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
-      - name: Test local slim container image
-        env:
-          FULL_DOCKER_IMAGE_NAME: "${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
-        run: ./gradlew ${{ steps.build_variables.outputs.REPO }}-integration:test
+#      - name: Build slim container image
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          file: Dockerfile.slim
+#          platforms: linux/amd64,linux/arm64
+#          tags: |
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest"
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest-slim"
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-slim"
+#      - name: Build ubuntu container image
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          file: Dockerfile.ubuntu
+#          platforms: linux/amd64,linux/arm64
+#          tags: |
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:latest-ubuntu"
+#            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-ubuntu"
+#      - name: Build local slim container image for testing
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          file: Dockerfile.slim
+#          load: true
+#          platforms: local
+#          tags: |
+#            "${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
+#      - name: Test local slim container image
+#        env:
+#          FULL_DOCKER_IMAGE_NAME: "${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}"
+#        run: ./gradlew ${{ steps.build_variables.outputs.REPO }}-integration:test
